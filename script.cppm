@@ -12,22 +12,58 @@ using namespace lispy::experimental;
 namespace script {
   hai::cstr source {};
 
+  struct context : basic_context<node> {
+    bool ended = false;
+    int idx;
+  };
+
   export int run(int idx) try {
-    basic_context<node> ctx {};
+    context ctx {
+      .idx = idx,
+    };
     ctx.fns["clear"] = [](auto n, auto aa, auto as) -> const node * {
       if (as != 0) err(n, "expecting no parameter");
+
+      auto ctx = static_cast<context *>(n->ctx);
+      if (ctx->ended) return n;
+
+      silog::trace("clear");
+
       return n;
     };
     ctx.fns["title"] = [](auto n, auto aa, auto as) -> const node * {
       if (as != 3) err(n, "expecting x, y and text");
+
+      auto ctx = static_cast<context *>(n->ctx);
+      if (ctx->ended) return n;
+
+      silog::trace("title");
+
       return n;
     };
     ctx.fns["text"] = [](auto n, auto aa, auto as) -> const node * {
       if (as != 3) err(n, "expecting x, y and text");
+
+      auto ctx = static_cast<context *>(n->ctx);
+      if (ctx->ended) return n;
+
+      silog::trace("text");
+
       return n;
     };
     ctx.fns["pause"] = [](auto n, auto aa, auto as) -> const node * {
       if (as != 0) err(n, "expecting no parameter");
+
+      auto ctx = static_cast<context *>(n->ctx);
+      if (ctx->ended) return n;
+      if (ctx->idx == 0) {
+        silog::trace("ding");
+        ctx->ended = true;
+        return n;
+      }
+
+      ctx->idx--;
+
       return n;
     };
     ctx.run(source);

@@ -1,5 +1,6 @@
 (clear)
 (title 0 0 "A B C")
+(pause)
 (text  0 0 "a b c")
 (pause)
 (text  0 0 "a b c")
