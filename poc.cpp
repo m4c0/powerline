@@ -60,8 +60,8 @@ static hai::uptr<sized_stuff> gss {};
 static void draw_0() {
   natty::clear(gas->text_surf);
   natty::draw({
-    .surface = gas->text_surf,
-    .font = gas->text_font_title,
+    .surface = *gas->text_surf,
+    .font = *gas->text_font_title,
     .position { 300, 90 },
     .text { "Olá bravo novo mundo!" },
   });
@@ -70,8 +70,8 @@ static void draw_1() {
   draw_0();
 
   natty::draw({
-    .surface = gas->text_surf,
-    .font = gas->text_font,
+    .surface = *gas->text_surf,
+    .font = *gas->text_font,
     .position { 400, 320 },
     .text { "Tópico do dia: mamilos" },
   });
@@ -80,8 +80,8 @@ static void draw_2() {
   draw_1();
 
   natty::draw({
-    .surface = gas->text_surf,
-    .font = gas->text_font,
+    .surface = *gas->text_surf,
+    .font = *gas->text_font,
     .position { 400, 420 },
     .text { "Por que são tão polêmicos?" },
   });
