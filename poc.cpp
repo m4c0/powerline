@@ -5,6 +5,7 @@
 import casein;
 import hai;
 import natty;
+import script;
 import sitime;
 import vinyl;
 import voo;
@@ -85,20 +86,18 @@ static void draw_2() {
     .text { "Por que são tão polêmicos?" },
   });
 }
+static void draw_3() {
+  natty::clear(gas->text_surf);
+}
 using draw_fn_t = void (*)();
 static draw_fn_t draw_fns[] {
   draw_0,
   draw_1,
   draw_2,
+  draw_3,
   nullptr,
 };
 static int draw_idx = 0; 
-
-static void start() {
-  gas.reset(new app_stuff {});
-
-  vee::update_descriptor_set(gas->text_dset.descriptor_set(), 0, gas->text_img.iv(), *gas->text_smp);
-}
 
 static void frame() {
   if (!gss) gss.reset(new sized_stuff {});
@@ -137,6 +136,17 @@ static void frame() {
   gss->sw.queue_present(gas->dq.queue());
 }
 
+static void start() {
+  gas.reset(new app_stuff {});
+
+  vee::update_descriptor_set(gas->text_dset.descriptor_set(), 0, gas->text_img.iv(), *gas->text_smp);
+
+  script::load([] {
+    using namespace vinyl;
+    on(FRAME, &frame);
+  });
+}
+
 const auto i = [] {
   using namespace casein;
   using namespace vinyl;
@@ -158,7 +168,6 @@ const auto i = [] {
 
   on(START,  &start);
   on(RESIZE, [] { gss.reset(nullptr); });
-  on(FRAME,  &frame);
   on(STOP,   [] { 
     gss.reset(nullptr);
     gas.reset(nullptr);
