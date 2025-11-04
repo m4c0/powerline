@@ -57,46 +57,6 @@ struct sized_stuff {
 };
 static hai::uptr<sized_stuff> gss {};
 
-static void draw_0() {
-  natty::clear(gas->text_surf);
-  natty::draw({
-    .surface = *gas->text_surf,
-    .font = *gas->text_font_title,
-    .position { 300, 90 },
-    .text { "Olá bravo novo mundo!" },
-  });
-}
-static void draw_1() {
-  draw_0();
-
-  natty::draw({
-    .surface = *gas->text_surf,
-    .font = *gas->text_font,
-    .position { 400, 320 },
-    .text { "Tópico do dia: mamilos" },
-  });
-}
-static void draw_2() {
-  draw_1();
-
-  natty::draw({
-    .surface = *gas->text_surf,
-    .font = *gas->text_font,
-    .position { 400, 420 },
-    .text { "Por que são tão polêmicos?" },
-  });
-}
-static void draw_3() {
-  natty::clear(gas->text_surf);
-}
-using draw_fn_t = void (*)();
-static draw_fn_t draw_fns[] {
-  draw_0,
-  draw_1,
-  draw_2,
-  draw_3,
-  nullptr,
-};
 static int draw_idx = 0; 
 
 static void frame() {
@@ -161,7 +121,6 @@ const auto i = [] {
     gas->text_loaded = false;
   });
   handle(KEY_DOWN, K_SPACE, [] {
-    if (!draw_fns[draw_idx + 1]) return;
     draw_idx++;
     gas->text_loaded = false;
   });
