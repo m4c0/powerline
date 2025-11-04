@@ -12,10 +12,30 @@ using namespace lispy::experimental;
 namespace script {
   hai::cstr source {};
 
-  void run() try {
-    silog::log(silog::info, "Processing script");
+  export int run(int idx) try {
+    basic_context<node> ctx {};
+    ctx.fns["clear"] = [](auto n, auto aa, auto as) -> const node * {
+      silog::trace("clear");
+      return n;
+    };
+    ctx.fns["title"] = [](auto n, auto aa, auto as) -> const node * {
+      silog::trace("title");
+      return n;
+    };
+    ctx.fns["text"] = [](auto n, auto aa, auto as) -> const node * {
+      silog::trace("text");
+      return n;
+    };
+    ctx.fns["pause"] = [](auto n, auto aa, auto as) -> const node * {
+      silog::trace("pause");
+      return n;
+    };
+    ctx.run(source);
+
+    return idx;
   } catch (const parser_error & e) {
     silog::log(silog::error, "%s", to_file_err("script.lsp", e).begin());
+    return idx;
   }
 
   export void load(auto && cb) {

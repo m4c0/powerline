@@ -108,6 +108,7 @@ static void frame() {
   gss->sw.queue_one_time_submit(gas->dq.queue(), [&] {
     if (!gas->text_loaded) {
       {
+        draw_idx = script::run(draw_idx);
         draw_fns[draw_idx]();
 
         voo::memiter<unsigned> pixies { gas->text_img.host_memory() };
