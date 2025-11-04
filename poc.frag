@@ -7,7 +7,7 @@ layout(location = 0) in vec2 f_pos;
 layout(location = 0) out vec4 colour;
 
 void main() {
-  vec2 p = f_pos * 0.5 + 0.5;
-  p = texture(text, p).rg;
-  colour = vec4(p, 1, 1);
+  vec2 uv = f_pos * vec2(0.5, 1) * 0.5 + 0.5;
+  vec4 tcol = texture(text, uv);
+  colour = vec4(tcol.r, 0, 1, 1);
 }

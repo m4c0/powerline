@@ -21,7 +21,7 @@ struct app_stuff {
   vee::sampler text_smp = vee::create_sampler(vee::linear_sampler);
   voo::h2l_image text_img {{
     .pd = dq.physical_device(),
-    .w = 1024,
+    .w = 2048,
     .h = 1024,
     .fmt = VK_FORMAT_R8G8B8A8_SRGB,
   }}; 
@@ -69,7 +69,7 @@ static void frame() {
         natty::draw({
           .surface = gas->text_surf,
           .font = gas->text_font,
-          .position { 0, 0 },
+          .position { 200, 50 },
           .text { "Olá bravo novo mundo!" },
         });
 
