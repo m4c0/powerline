@@ -57,6 +57,7 @@ struct sized_stuff {
 static hai::uptr<sized_stuff> gss {};
 
 static void draw_0() {
+  natty::clear(gas->text_surf);
   natty::draw({
     .surface = gas->text_surf,
     .font = gas->text_font_title,
