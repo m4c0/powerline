@@ -19,12 +19,13 @@ namespace script {
   struct context : basic_context<node> {
     hai::varray<natty::draw_params> nodes { 16 };
     bool ended = false;
-    int idx;
+    int index = 0;
+    int rest;
   };
 
-  export int run(int idx) try {
+  export int run(natty::surface * surf, int idx) try {
     context ctx {
-      .idx = idx,
+      .rest = idx,
     };
     ctx.fns["clear"] = [](auto n, auto aa, auto as) -> const node * {
       if (as != 0) err(n, "expecting no parameter");
@@ -77,18 +78,24 @@ namespace script {
 
       auto ctx = static_cast<context *>(n->ctx);
       if (ctx->ended) return n;
-      if (ctx->idx == 0) {
+      if (ctx->rest <= 0) {
         ctx->ended = true;
         return n;
       }
 
-      ctx->idx--;
+      ctx->rest--;
+      ctx->index++;
 
       return n;
     };
     ctx.run(source);
 
-    return idx;
+    for (auto p: ctx.nodes) {
+      p.surface = surf;
+      natty::draw(p);
+    }
+
+    return ctx.index;
   } catch (const parser_error & e) {
     silog::log(silog::error, "%s", to_file_err("script.lsp", e).begin());
     return idx;

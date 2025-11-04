@@ -108,8 +108,7 @@ static void frame() {
   gss->sw.queue_one_time_submit(gas->dq.queue(), [&] {
     if (!gas->text_loaded) {
       {
-        draw_idx = script::run(draw_idx);
-        draw_fns[draw_idx]();
+        draw_idx = script::run(*gas->text_surf, draw_idx);
 
         voo::memiter<unsigned> pixies { gas->text_img.host_memory() };
         auto ptr = natty::surface_data(*gas->text_surf).begin();
