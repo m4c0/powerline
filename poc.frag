@@ -4,6 +4,7 @@
 
 layout(push_constant) uniform upc {
   float time;
+  float angle;
 };
 
 layout(set = 0, binding = 0) uniform sampler2D text;
@@ -27,9 +28,9 @@ void main() {
   vec4 bgcol = background(f_pos * vec2(1, -1));
   
   mat4 rot = mat4(
-    cos(time), 0, sin(time), 0,
+    cos(angle), 0, sin(angle), 0,
     0, 1, 0, 0,
-    -sin(time), 0, cos(time), 0,
+    -sin(angle), 0, cos(angle), 0,
     0, 0, 0, 1
   );
   vec4 p4 = rot * vec4(normalize(vec3(f_pos, 1)), 1);
