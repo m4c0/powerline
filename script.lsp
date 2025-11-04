@@ -7,4 +7,12 @@
 (pause)
 
 (clear)
+(title 300 90 "Corujas")
 (pause)
+(text 400 320 "1. Comece com uns circulos")
+(pause)
+(text 400 420 "2. Desenhe o resto da coruja")
+(pause)
+
+(clear)
+(title 400 480 "Falou e até a próxima")
