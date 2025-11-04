@@ -73,7 +73,7 @@ static void frame() {
         natty::draw({
           .surface = gas->text_surf,
           .font = gas->text_font,
-          .position { 200, 50 },
+          .position { 300, 90 },
           .text { "Olá bravo novo mundo!" },
         });
 
