@@ -90,6 +90,7 @@ namespace script {
     };
     ctx.run(source);
 
+    natty::clear(surf);
     for (auto p: ctx.nodes) {
       p.surface = surf;
       natty::draw(p);
