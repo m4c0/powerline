@@ -5,6 +5,7 @@
 import casein;
 import hai;
 import natty;
+import sitime;
 import vinyl;
 import voo;
 
@@ -15,7 +16,8 @@ struct app_stuff {
 
   voo::single_frag_dset text_dset { 1 };
   vee::pipeline_layout pl = vee::create_pipeline_layout(
-    text_dset.descriptor_set_layout()
+    text_dset.descriptor_set_layout(),
+    vee::fragment_push_constant_range<float>()
   );
 
   vee::sampler text_smp = vee::create_sampler(vee::linear_sampler);
@@ -62,6 +64,8 @@ static void start() {
 static void frame() {
   if (!gss) gss.reset(new sized_stuff {});
 
+  static sitime::stopwatch watch {};
+
   gss->sw.acquire_next_image();
   gss->sw.queue_one_time_submit(gas->dq.queue(), [&] {
     if (!gas->text_loaded) {
@@ -89,7 +93,10 @@ static void frame() {
     });
     auto cb = gss->sw.command_buffer();
 
+    float time = watch.millis() / 1000.f;
+
     vee::cmd_bind_gr_pipeline(cb, *gss->gp);
+    vee::cmd_push_fragment_constants(cb, *gas->pl, &time);
     vee::cmd_bind_descriptor_set(cb, *gas->pl, 0, gas->text_dset.descriptor_set());
     gas->quad.run(cb, 0);
   });

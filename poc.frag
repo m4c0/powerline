@@ -1,5 +1,9 @@
 #version 450
 
+layout(push_constant) uniform upc {
+  float time;
+};
+
 layout(set = 0, binding = 0) uniform sampler2D text;
 
 layout(location = 0) in vec2 f_pos;
@@ -16,10 +20,10 @@ void main() {
 
 // Original code is named "CC0 - Neonwave sunrise" by mrange
 // https://www.shadertoy.com/view/7dyyRy
-// This copy was heavily modified to be used outside ShaderToy
+// This copy was modified to be used outside ShaderToy
 
 #define RESOLUTION    vec2(1024, 768)
-#define TIME          1
+#define TIME          time
 #define PI            3.141592654
 #define TAU           (2.0*PI)
 
