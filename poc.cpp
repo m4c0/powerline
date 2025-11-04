@@ -40,7 +40,7 @@ struct sized_stuff {
     .render_pass = *gas->rp,
     .extent = sw.extent(),
     .shaders {
-      voo::shader { "poc.vert.spv" }.pipeline_vert_stage(),
+      voo::shader { "poc.vert.spv" }.pipeline_vert_stage("main", vee::specialisation_info<float>(gas->dq.aspect_of())),
       voo::shader { "poc.frag.spv" }.pipeline_frag_stage(),
     },
     .bindings {
