@@ -29,7 +29,8 @@ struct app_stuff {
   }}; 
   bool text_loaded = false;
 
-  natty::font_t text_font = natty::create_font("Times", 48);
+  natty::font_t text_font_title = natty::create_font("Cascadia Mono", 96);
+  natty::font_t text_font = natty::create_font("Times", 72);
   natty::surface_t text_surf = natty::create_surface(text_img.width(), text_img.height());
 };
 static hai::uptr<app_stuff> gas {};
@@ -55,6 +56,43 @@ struct sized_stuff {
 };
 static hai::uptr<sized_stuff> gss {};
 
+static void draw_0() {
+  natty::draw({
+    .surface = gas->text_surf,
+    .font = gas->text_font_title,
+    .position { 300, 90 },
+    .text { "Olá bravo novo mundo!" },
+  });
+}
+static void draw_1() {
+  draw_0();
+
+  natty::draw({
+    .surface = gas->text_surf,
+    .font = gas->text_font,
+    .position { 400, 320 },
+    .text { "Tópico do dia: mamilos" },
+  });
+}
+static void draw_2() {
+  draw_1();
+
+  natty::draw({
+    .surface = gas->text_surf,
+    .font = gas->text_font,
+    .position { 400, 420 },
+    .text { "Por que são tão polêmicos?" },
+  });
+}
+using draw_fn_t = void (*)();
+static draw_fn_t draw_fns[] {
+  draw_0,
+  draw_1,
+  draw_2,
+  nullptr,
+};
+static int draw_idx = 0; 
+
 static void start() {
   gas.reset(new app_stuff {});
 
@@ -70,12 +108,7 @@ static void frame() {
   gss->sw.queue_one_time_submit(gas->dq.queue(), [&] {
     if (!gas->text_loaded) {
       {
-        natty::draw({
-          .surface = gas->text_surf,
-          .font = gas->text_font,
-          .position { 300, 90 },
-          .text { "Olá bravo novo mundo!" },
-        });
+        draw_fns[draw_idx]();
 
         voo::memiter<unsigned> pixies { gas->text_img.host_memory() };
         auto ptr = natty::surface_data(*gas->text_surf).begin();
@@ -110,6 +143,16 @@ const auto i = [] {
   handle(KEY_DOWN, K_F, [] {
     fullscreen = !fullscreen;
     interrupt(IRQ_FULLSCREEN);
+  });
+  handle(KEY_DOWN, K_LEFT, [] {
+    if (draw_idx == 0) return;
+    draw_idx--;
+    gas->text_loaded = false;
+  });
+  handle(KEY_DOWN, K_SPACE, [] {
+    if (!draw_fns[draw_idx + 1]) return;
+    draw_idx++;
+    gas->text_loaded = false;
   });
 
   on(START,  &start);
