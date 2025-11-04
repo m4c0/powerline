@@ -15,19 +15,19 @@ namespace script {
   export int run(int idx) try {
     basic_context<node> ctx {};
     ctx.fns["clear"] = [](auto n, auto aa, auto as) -> const node * {
-      silog::trace("clear");
+      if (as != 0) err(n, "expecting no parameter");
       return n;
     };
     ctx.fns["title"] = [](auto n, auto aa, auto as) -> const node * {
-      silog::trace("title");
+      if (as != 3) err(n, "expecting x, y and text");
       return n;
     };
     ctx.fns["text"] = [](auto n, auto aa, auto as) -> const node * {
-      silog::trace("text");
+      if (as != 3) err(n, "expecting x, y and text");
       return n;
     };
     ctx.fns["pause"] = [](auto n, auto aa, auto as) -> const node * {
-      silog::trace("pause");
+      if (as != 0) err(n, "expecting no parameter");
       return n;
     };
     ctx.run(source);
