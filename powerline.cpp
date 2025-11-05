@@ -93,7 +93,7 @@ static void frame() {
 
     upc pc {
       .time = watch.millis() / 1000.f,
-      .angle = watch.millis() / 1000.f,
+      .angle = 0,
     };
 
     vee::cmd_bind_gr_pipeline(cb, *gss->gp);
