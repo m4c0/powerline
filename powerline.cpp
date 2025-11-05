@@ -1,6 +1,6 @@
 #pragma leco app
-#pragma leco add_shader "poc.vert"
-#pragma leco add_shader "poc.frag"
+#pragma leco add_shader "powerline.vert"
+#pragma leco add_shader "powerline.frag"
 
 import casein;
 import hai;
@@ -16,7 +16,7 @@ struct upc {
 };
 
 struct app_stuff {
-  voo::device_and_queue dq { "poc-vinyl", casein::native_ptr };
+  voo::device_and_queue dq { "powerline-vinyl", casein::native_ptr };
   vee::render_pass rp = voo::single_att_render_pass(dq);
   voo::one_quad quad { dq };
 
@@ -49,8 +49,8 @@ struct sized_stuff {
     .render_pass = *gas->rp,
     .extent = sw.extent(),
     .shaders {
-      voo::shader { "poc.vert.spv" }.pipeline_vert_stage("main", vee::specialisation_info<float>(gas->dq.aspect_of())),
-      voo::shader { "poc.frag.spv" }.pipeline_frag_stage(),
+      voo::shader { "powerline.vert.spv" }.pipeline_vert_stage("main", vee::specialisation_info<float>(gas->dq.aspect_of())),
+      voo::shader { "powerline.frag.spv" }.pipeline_frag_stage(),
     },
     .bindings {
       voo::one_quad::vertex_input_bind(),
