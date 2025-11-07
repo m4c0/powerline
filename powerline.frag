@@ -1,6 +1,6 @@
 #version 450
-#extension GL_GOOGLE_include_directive : require
-#include "../glslinc/inigo.glsl"
+#pragma leco include "../glslinc/inigo.glsl"
+#pragma leco include "neonwave_sunrise.glsl"
 
 layout(push_constant) uniform upc {
   float time;
@@ -14,6 +14,7 @@ layout(location = 0) in vec2 f_pos;
 layout(location = 0) out vec4 colour;
 
 vec4 background(vec2 coord);
+float sd_box(vec2, vec2);
 
 vec4 textbox(vec2 p, vec4 bgcol) {
   vec2 uv = p * vec2(0.5, 1) * 0.5 + 0.5;
@@ -38,5 +39,3 @@ void main() {
   vec2 p = clamp(p4.xy / p4.z, -mx, mx);
   colour = textbox(p, bgcol);
 }
-
-#include "neonwave_sunrise.glsl"
