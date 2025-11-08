@@ -1,3 +1,10 @@
+#version 450
+
+layout(push_constant) uniform upc {
+  float time;
+  float angle;
+};
+
 // Original code is named "CC0 - Neonwave sunrise" by mrange
 // https://www.shadertoy.com/view/7dyyRy
 // This copy was modified to be used outside ShaderToy
