@@ -70,7 +70,7 @@ static void frame() {
   static sitime::stopwatch watch {};
 
   gss->sw.acquire_next_image();
-  gss->sw.queue_one_time_submit(gas->dq.queue(), [&] {
+  gss->sw.queue_one_time_submit([&] {
     if (!gas->text_loaded) {
       {
         draw_idx = script::run(*gas->text_surf, draw_idx);
@@ -101,7 +101,7 @@ static void frame() {
     vee::cmd_bind_descriptor_set(cb, *gas->pl, 0, gas->text_dset.descriptor_set());
     gas->quad.run(cb, 0);
   });
-  gss->sw.queue_present(gas->dq.queue());
+  gss->sw.queue_present();
 }
 
 static void start() {
