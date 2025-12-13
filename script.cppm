@@ -28,7 +28,7 @@ namespace script {
       .rest = idx,
     };
     ctx.fns["clear"] = [](auto n, auto aa, auto as) -> const node * {
-      if (as != 0) err(n, "expecting no parameter");
+      if (as != 0) erred(n, "expecting no parameter");
 
       auto ctx = static_cast<context *>(n->ctx);
       if (ctx->ended) return n;
@@ -38,8 +38,8 @@ namespace script {
       return n;
     };
     ctx.fns["title"] = [](auto n, auto aa, auto as) -> const node * {
-      if (as != 3) err(n, "expecting x, y and text");
-      if (!is_atom(aa[2])) err(aa[2], "expecting an atom");
+      if (as != 3) erred(n, "expecting x, y and text");
+      if (!is_atom(aa[2])) erred(aa[2], "expecting an atom");
 
       auto x = to_i(aa[0]);
       auto y = to_i(aa[1]);
@@ -56,8 +56,8 @@ namespace script {
       return n;
     };
     ctx.fns["text"] = [](auto n, auto aa, auto as) -> const node * {
-      if (as != 3) err(n, "expecting x, y and text");
-      if (!is_atom(aa[2])) err(aa[2], "expecting an atom");
+      if (as != 3) erred(n, "expecting x, y and text");
+      if (!is_atom(aa[2])) erred(aa[2], "expecting an atom");
 
       auto x = to_i(aa[0]);
       auto y = to_i(aa[1]);
@@ -74,7 +74,7 @@ namespace script {
       return n;
     };
     ctx.fns["pause"] = [](auto n, auto aa, auto as) -> const node * {
-      if (as != 0) err(n, "expecting no parameter");
+      if (as != 0) erred(n, "expecting no parameter");
 
       auto ctx = static_cast<context *>(n->ctx);
       if (ctx->ended) return n;
