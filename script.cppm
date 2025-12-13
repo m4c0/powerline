@@ -16,7 +16,7 @@ namespace script {
   natty::font_t font_title = natty::create_font("Cascadia Mono", 96);
   natty::font_t font = natty::create_font("Times", 72);
 
-  struct context : basic_context<node> {
+  struct data {
     hai::varray<natty::draw_params> nodes { 16 };
     bool ended = false;
     int index = 0;
@@ -24,13 +24,14 @@ namespace script {
   };
 
   export int run(natty::surface * surf, int idx) try {
-    context ctx {
-      .rest = idx,
-    };
+    data d { .rest = idx };
+
+    temp_frame ctx {};
+    ctx.ptrs["data"] = &d;
     ctx.fns["clear"] = [](auto n, auto aa, auto as) -> const node * {
       if (as != 0) erred(n, "expecting no parameter");
 
-      auto ctx = static_cast<context *>(n->ctx);
+      auto ctx = static_cast<data *>(context()->ptr("data"));
       if (ctx->ended) return n;
 
       ctx->nodes.truncate(0);
@@ -44,7 +45,7 @@ namespace script {
       auto x = to_i(aa[0]);
       auto y = to_i(aa[1]);
 
-      auto ctx = static_cast<context *>(n->ctx);
+      auto ctx = static_cast<data *>(context()->ptr("data"));
       if (ctx->ended) return n;
 
       ctx->nodes.push_back_doubling(natty::draw_params {
@@ -62,7 +63,7 @@ namespace script {
       auto x = to_i(aa[0]);
       auto y = to_i(aa[1]);
 
-      auto ctx = static_cast<context *>(n->ctx);
+      auto ctx = static_cast<data *>(context()->ptr("data"));
       if (ctx->ended) return n;
 
       ctx->nodes.push_back_doubling(natty::draw_params {
@@ -76,7 +77,7 @@ namespace script {
     ctx.fns["pause"] = [](auto n, auto aa, auto as) -> const node * {
       if (as != 0) erred(n, "expecting no parameter");
 
-      auto ctx = static_cast<context *>(n->ctx);
+      auto ctx = static_cast<data *>(context()->ptr("data"));
       if (ctx->ended) return n;
       if (ctx->rest <= 0) {
         ctx->ended = true;
@@ -88,17 +89,19 @@ namespace script {
 
       return n;
     };
-    ctx.run(source);
+
+    temp_arena<node> mem {};
+    lispy::run<node>("script.lsp", source);
 
     natty::clear(surf);
-    for (auto p: ctx.nodes) {
+    for (auto p: d.nodes) {
       p.surface = surf;
       natty::draw(p);
     }
 
-    return ctx.index;
+    return d.index;
   } catch (const parser_error & e) {
-    silog::log(silog::error, "%s", to_file_err("script.lsp", e).begin());
+    silog::log(silog::error, "%s", to_file_err(e).begin());
     return idx;
   }
 
