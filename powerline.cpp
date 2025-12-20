@@ -49,8 +49,8 @@ struct sized_stuff {
     .render_pass = *gas->rp,
     .extent = sw.extent(),
     .shaders {
-      voo::shader { "powerline.vert.spv" }.pipeline_vert_stage("main", vee::specialisation_info<float>(gas->dq.aspect_of())),
-      voo::shader { "powerline.frag.spv" }.pipeline_frag_stage(),
+      voo::vert_shader { "powerline.vert.spv" }.pipeline_stage("main", vee::specialisation_info<float>(gas->dq.aspect_of())),
+      voo::frag_shader { "powerline.frag.spv" }.pipeline_stage(),
     },
     .bindings {
       voo::one_quad::vertex_input_bind(),
